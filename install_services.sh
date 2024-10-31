@@ -144,7 +144,7 @@ current_lang="cn"
 # Function to select language
 select_language() {
     echo "Welcome to use VPS General Scripts / 欢迎使用 VPS 通用脚本"
-    echo "Version: 1.0.3"
+    echo "Version: 1.0.4"
     echo "Last Updated: 2024-10-31"
     echo "Github: https://github.com/lizhenmiao/vps-general-scripts"
     echo ""
@@ -421,6 +421,7 @@ is_vps_in_china() {
 display_menu() {
     local is_china=$1
     while true; do
+        clear  # Clear the screen before displaying the menu
         echo "$(get_text "choose_option")"
         echo "1) $(get_text "install_nginx")"
         echo "2) $(get_text "uninstall_nginx")"
@@ -673,8 +674,8 @@ uninstall_freebsd_nezha_agent() {
 
 # Main script to handle FreeBSD menu
 display_freebsd_menu() {
-    clear  # Clear the screen before displaying the menu
     while true; do
+        clear  # Clear the screen before displaying the menu
         echo "$(get_text "choose_option")"
         echo "1) $(get_text "install_agent")"
         echo "2) $(get_text "uninstall_agent")"
