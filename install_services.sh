@@ -6,14 +6,18 @@ declare -A lang_cn
 
 # English translations
 lang_en=(
-    ["welcome"]="Detected FreeBSD system."
     ["choose_option"]="Please choose an option:"
+    ["invalid_lang_option"]="Invalid option, defaulting to Chinese."
+    ["address"]="Address"
+    ["detected_os"]="Detected OS"
     ["install_agent"]="Install Nezha agent"
     ["check_status"]="Check Nezha agent status"
     ["uninstall_agent"]="Uninstall Nezha agent"
     ["start_agent"]="Start Nezha agent"
     ["stop_agent"]="Stop Nezha agent"
+    ["restart_agent"]="Restart Nezha agent"
     ["exit"]="Exit"
+    ["exit_message"]="Exiting. You can run ./install_services.sh to display this menu again."
     ["are_you_sure"]="Are you sure you want to proceed? (y/n): "
     ["cancelled"]="Action cancelled."
     ["invalid_option"]="Invalid option."
@@ -29,27 +33,57 @@ lang_en=(
     ["uninstalling_nginx"]="Uninstalling Nginx on"
     ["nginx_not_supported"]="Nginx installation not supported for"
     ["nginx_not_installed"]="Nginx is not installed."
-    ["docker_installed"]="Docker is already installed."
+    ["docker_already_installed"]="Docker is already installed."
     ["installing_docker"]="Installing Docker on"
     ["uninstalling_docker"]="Uninstalling Docker on"
     ["docker_not_supported"]="Docker installation not supported for"
     ["docker_not_installed"]="Docker is not installed."
     ["set_mirrors"]="Setting mirrors for"
     ["mirrors_not_supported"]="Setting mirrors not supported for"
-    ["vps_in_china"]="Detected that the VPS is in China."
-    ["vps_not_in_china"]="Detected that the VPS is not in China."
+    ["docker_binary_location"]="Docker binary location"
+    ["docker_root_location"]="Docker root directory"
+    ["nginx_binary_location"]="Nginx binary location"
+    ["nginx_config_file"]="Nginx configuration file"
+    ["nginx_config_file_not_found"]="Nginx configuration file location not found."
+    ["install_nginx"]="Install Nginx"
+    ["uninstall_nginx"]="Uninstall Nginx"
+    ["check_nginx_info"]="Check Nginx installation info"
+    ["install_docker"]="Install Docker"
+    ["uninstall_docker"]="Uninstall Docker"
+    ["check_docker_info"]="Check Docker installation info"
+    ["set_mirrors_cn"]="Set mirrors for China"
+    ["nezha_agent_not_installed"]="Nezha agent is not installed."
+    ["terminated_agent"]="Terminated agent.sh with PID"
+    ["terminated_nezha_agent"]="Terminated nezha-agent with PID"
+    ["nezha_agent_not_running"]="Nezha agent is not running."
+    ["enter_domain"]="Enter the Nezha dashboard domain"
+    ["enter_port"]="Enter the Nezha dashboard port"
+    ["enter_password"]="Enter the password provided by Nezha dashboard"
+    ["get_latest_version"]="Getting latest version..."
+    ["failed_get_latest_version"]="Failed to fetch the latest version."
+    ["nezha_agent_installed"]="Nezha agent is already installed."
+    ["nezha_agent_running"]="Nezha agent is currently running."
+    ["nezha_agent_installed_not_running"]="Nezha agent is installed but not running."
+    ["nezha_agent_uninstalled"]="Nezha agent uninstallation completed."
+    ["unsupported_os"]="This script does not support your operating system."
+    ["unknown_os"]="This script is designed to run on Linux or FreeBSD systems."
+    ["attempt_failed"]="Attempt %d failed, retrying..."
 )
 
 # Chinese translations
 lang_cn=(
-    ["welcome"]="检测到 FreeBSD 系统。"
     ["choose_option"]="请选择一个选项："
+    ["invalid_lang_option"]="无效的选项，默认为中文"
+    ["address"]="地址"
+    ["detected_os"]="检测到的操作系统"
     ["install_agent"]="安装哪吒探针"
     ["check_status"]="检查哪吒探针状态"
     ["uninstall_agent"]="卸载哪吒探针"
     ["start_agent"]="启动哪吒探针"
     ["stop_agent"]="停止哪吒探针"
+    ["restart_agent"]="重启哪吒探针"
     ["exit"]="退出"
+    ["exit_message"]="已退出。之后可以运行 ./install_services.sh 来显示此菜单。"
     ["are_you_sure"]="你确定要继续吗？(y/n): "
     ["cancelled"]="操作取消。"
     ["invalid_option"]="无效选项。"
@@ -65,26 +99,52 @@ lang_cn=(
     ["uninstalling_nginx"]="正在卸载 Nginx 于"
     ["nginx_not_supported"]="不支持在此系统上安装 Nginx"
     ["nginx_not_installed"]="Nginx 未安装。"
-    ["docker_installed"]="Docker 已经安装。"
+    ["docker_already_installed"]="Docker 已经安装。"
     ["installing_docker"]="正在安装 Docker 于"
     ["uninstalling_docker"]="正在卸载 Docker 于"
     ["docker_not_supported"]="不支持在此系统上安装 Docker"
     ["docker_not_installed"]="Docker 未安装。"
     ["set_mirrors"]="设置镜像源为"
     ["mirrors_not_supported"]="不支持在此系统上设置镜像源"
-    ["vps_in_china"]="检测到 VPS 位于中国。"
-    ["vps_not_in_china"]="检测到 VPS 不在中国。"
+    ["docker_binary_location"]="Docker 二进制文件位置"
+    ["docker_root_location"]="Docker 根目录"
+    ["nginx_binary_location"]="Nginx 二进制文件位置"
+    ["nginx_config_file"]="Nginx 配置文件"
+    ["nginx_config_file_not_found"]="未找到 Nginx 配置文件位置"
+    ["install_nginx"]="安装 Nginx"
+    ["uninstall_nginx"]="卸载 Nginx"
+    ["check_nginx_info"]="检查 Nginx 安装信息"
+    ["install_docker"]="安装 Docker"
+    ["uninstall_docker"]="卸载 Docker"
+    ["check_docker_info"]="检查 Docker 安装信息"
+    ["set_mirrors_cn"]="设置中国镜像源"
+    ["nezha_agent_not_installed"]="哪吒探针未安装。"
+    ["terminated_agent"]="终止 agent.sh 进程 PID"
+    ["terminated_nezha_agent"]="终止 nezha-agent 进程 PID"
+    ["nezha_agent_not_running"]="哪吒探针未运行。"
+    ["enter_domain"]="请输入哪吒面板域名"
+    ["enter_port"]="请输入哪吒面板端口"
+    ["enter_password"]="请输入哪吒面板提供的密码"
+    ["get_latest_version"]="获取最新版本中..."
+    ["failed_get_latest_version"]="获取最新版本失败。"
+    ["nezha_agent_installed"]="哪吒探针已安装。"
+    ["nezha_agent_running"]="哪吒探针已运行。"
+    ["nezha_agent_installed_not_running"]="哪吒探针已安装，但未运行。"
+    ["nezha_agent_uninstalled"]="哪吒探针已卸载。"
+    ["unsupported_os"]="不支持此操作系统。"
+    ["unknown_os"]="此脚本适用于 Linux 或 FreeBSD 系统。"
+    ["attempt_failed"]="第 %d 次尝试失败，正在重试..."
 )
 
 # Set default language
-current_lang="en"
+current_lang="cn"
 
 # Function to select language
 select_language() {
     echo "Select language / 选择语言:"
     echo "1) English"
     echo "2) 中文"
-    read -p "Choose an option [1-2]: " lang_choice
+    read -p "$(get_text "choose_option") [1-2]: " lang_choice
     case $lang_choice in
         1)
             current_lang="en"
@@ -93,19 +153,27 @@ select_language() {
             current_lang="cn"
             ;;
         *)
-            echo "Invalid option, defaulting to English."
-            current_lang="en"
+            echo "$(get_text "invalid_lang_option")"
+            current_lang="cn"
             ;;
     esac
 }
 
-# Function to get translated text
+# Function to get translated text with optional formatting
 get_text() {
     local key=$1
+    shift  # Remove the first argument (key) from the argument list
+    local text
     if [ "$current_lang" == "en" ]; then
-        echo "${lang_en[$key]}"
+        text="${lang_en[$key]}"
     else
-        echo "${lang_cn[$key]}"
+        text="${lang_cn[$key]}"
+    fi
+    # If there are additional arguments, use them for formatting
+    if [ $# -gt 0 ]; then
+        printf "$text" "$@"
+    else
+        echo "$text"
     fi
 }
 
@@ -140,9 +208,7 @@ detect_os() {
         IPV6=$(hostname -I | awk '{print $2}')
         MAC=$(ip link show | awk '/ether/ {print $2}' | head -n 1)
 
-        echo "IPv4 Address: $IPV4"
-        echo "IPv6 Address: $IPV6"
-        echo "MAC Address: $MAC"
+        echo "IPv4 $(get_text "address"): $IPV4 IPv6 $(get_text "address"): $IPV6 MAC $(get_text "address"): $MAC"
 
     elif [[ "$OSTYPE" == "freebsd"* ]]; then
         OS="FreeBSD"
@@ -151,7 +217,8 @@ detect_os() {
         OS="Unsupported"
         VERSION="Unknown"
     fi
-    echo "Detected OS: $OS $VERSION"
+    echo "$(get_text "detected_os"): $OS $VERSION"
+    echo ""
 }
 
 # Function to check if Nginx is installed
@@ -213,14 +280,14 @@ uninstall_nginx() {
 # Function to check Nginx installation info
 info_nginx() {
     if is_nginx_installed; then
-        echo "Nginx is installed."
-        echo "Nginx binary location: $(command -v nginx)"
+        echo "$(get_text "nginx_installed")"
+        echo "$(get_text "nginx_binary_location"): $(command -v nginx)"
         if [ -f /etc/nginx/nginx.conf ]; then
-            echo "Nginx configuration file: /etc/nginx/nginx.conf"
+            echo "$(get_text "nginx_config_file"): /etc/nginx/nginx.conf"
         elif [ -f /usr/local/nginx/conf/nginx.conf ]; then
-            echo "Nginx configuration file: /usr/local/nginx/conf/nginx.conf"
+            echo "$(get_text "nginx_config_file"): /usr/local/nginx/conf/nginx.conf"
         else
-            echo "Nginx configuration file location not found."
+            echo "$(get_text "nginx_config_file_not_found")"
         fi
     else
         echo "$(get_text "nginx_not_installed")"
@@ -235,7 +302,7 @@ is_docker_installed() {
 # Function to install Docker
 install_docker() {
     if is_docker_installed; then
-        echo "$(get_text "docker_installed")"
+        echo "$(get_text "docker_already_installed")"
     else
         case "$OS" in
             ubuntu|debian)
@@ -291,9 +358,9 @@ uninstall_docker() {
 # Function to check Docker installation info
 info_docker() {
     if is_docker_installed; then
-        echo "Docker is installed."
-        echo "Docker binary location: $(command -v docker)"
-        echo "Docker root directory: $(docker info --format '{{ .DockerRootDir }}')"
+        echo "$(get_text "docker_already_installed")"
+        echo "$(get_text "docker_binary_location"): $(command -v docker)"
+        echo "$(get_text "docker_root_location"): $(docker info --format '{{ .DockerRootDir }}')"
     else
         echo "$(get_text "docker_not_installed")"
     fi
@@ -342,28 +409,21 @@ is_vps_in_china() {
 
 # Function to display the menu and handle user input
 display_menu() {
-    local is_china=$1
-    if [[ $is_china == 1 ]]; then
-        echo "$(get_text "vps_in_china")"
-    else
-        echo "$(get_text "vps_not_in_china")"
-    fi
-
     while true; do
         echo "$(get_text "choose_option")"
-        echo "1) Install Nginx"
-        echo "2) Install Docker"
-        echo "3) Uninstall Nginx"
-        echo "4) Uninstall Docker"
-        echo "5) Check Nginx installation info"
-        echo "6) Check Docker installation info"
+        echo "1) $(get_text "install_nginx")"
+        echo "2) $(get_text "uninstall_nginx")"
+        echo "3) $(get_text "check_nginx_info")"
+        echo "4) $(get_text "install_docker")"
+        echo "5) $(get_text "uninstall_docker")"
+        echo "6) $(get_text "check_docker_info")"
         if [[ $is_china == 1 ]]; then
-            echo "7) Set mirrors for China"
+            echo "7) $(get_text "set_mirrors_cn")"
             echo "0) $(get_text "exit")"
-            read -p "Choose an option [0-7]: " choice
+            read -p "$(get_text "choose_option") [0-7]: " choice
         else
             echo "0) $(get_text "exit")"
-            read -p "Choose an option [0-6]: " choice
+            read -p "$(get_text "choose_option") [0-6]: " choice
         fi
 
         case $choice in
@@ -374,21 +434,21 @@ display_menu() {
                 ;;
             2)
                 if confirm_action; then
-                    install_docker
-                fi
-                ;;
-            3)
-                if confirm_action; then
                     uninstall_nginx
                 fi
                 ;;
+            3)
+                info_nginx
+                ;;
             4)
                 if confirm_action; then
-                    uninstall_docker
+                    install_docker
                 fi
                 ;;
             5)
-                info_nginx
+                if confirm_action; then
+                    uninstall_docker
+                fi
                 ;;
             6)
                 info_docker
@@ -403,7 +463,7 @@ display_menu() {
                 fi
                 ;;
             0)
-                echo "$(get_text "exit")"
+                echo "$(get_text "exit_message")"
                 break
                 ;;
             *)
@@ -468,14 +528,14 @@ start_freebsd_nezha_agent() {
                 print_nezha_agent_pids
                 return
             else
-                echo "Attempt $i failed, retrying..."
+                echo "$(get_text "attempt_failed" $i)"
                 nohup ~/nezha/agent.sh > /dev/null 2>&1 &
             fi
         done
 
         echo "$(get_text "failed_start")"
     else
-        echo "Nezha agent is not installed."
+        echo "$(get_text "nezha_agent_not_installed")"
     fi
 }
 
@@ -490,18 +550,24 @@ stop_freebsd_nezha_agent() {
             local nezha_agent_pid=$(get_freebsd_pid_by_name 'nezha-agent')
             if [ -n "$agent_pid" ]; then
                 kill "$agent_pid"
-                echo "Terminated agent.sh with PID $agent_pid"
+                echo "$(get_text "terminated_agent") $agent_pid"
             fi
             if [ -n "$nezha_agent_pid" ]; then
                 kill "$nezha_agent_pid"
-                echo "Terminated nezha-agent with PID $nezha_agent_pid"
+                echo "$(get_text "terminated_nezha_agent") $nezha_agent_pid"
             fi
         else
-            echo "Nezha agent is not running."
+            echo "$(get_text "nezha_agent_not_running")"
         fi
     else
-        echo "Nezha agent is not installed."
+        echo "$(get_text "nezha_agent_not_installed")"
     fi
+}
+
+# Function to restart Nezha agent on FreeBSD
+restart_freebsd_nezha_agent() {
+    stop_freebsd_nezha_agent
+    start_freebsd_nezha_agent
 }
 
 # Function to install Nezha agent on FreeBSD
@@ -511,13 +577,14 @@ install_freebsd_nezha_agent() {
         return
     fi
 
-    read -p "Enter the Nezha dashboard domain: " domain
-    read -p "Enter the Nezha dashboard port: " port
-    read -p "Enter the Nezha dashboard password: " password
+    read -p "$(get_text "enter_domain"): " domain
+    read -p "$(get_text "enter_port"): " port
+    read -p "$(get_text "enter_password"): " password
 
+    echo "$(get_text "get_latest_version")"
     local latest_version=$(get_latest_nezha_version)
     if [ -z "$latest_version" ]; then
-        echo "Failed to fetch the latest version of Nezha agent."
+        echo "$(get_text "failed_get_latest_version")"
         return
     fi
 
@@ -548,7 +615,7 @@ EOF
             echo "$(get_text "check_log")"
             return
         else
-            echo "Attempt $i failed, retrying..."
+            echo "$(get_text "attempt_failed" $i)"
             nohup ./agent.sh > /dev/null 2>&1 &
         fi
     done
@@ -559,15 +626,15 @@ EOF
 # Function to check the status of Nezha agent on FreeBSD
 check_freebsd_nezha_agent_status() {
     if is_freebsd_nezha_agent_installed; then
-        echo "Nezha agent is installed."
+        echo "$(get_text "nezha_agent_installed")"
         if is_freebsd_nezha_agent_running; then
-            echo "Nezha agent is currently running."
+            echo "$(get_text "nezha_agent_running")"
             print_nezha_agent_pids
         else
-            echo "Nezha agent is installed but not running."
+            echo "$(get_text "nezha_agent_installed_not_running")"
         fi
     else
-        echo "Nezha agent is not installed."
+        echo "$(get_text "nezha_agent_not_installed")"
     fi
 }
 
@@ -579,24 +646,24 @@ uninstall_freebsd_nezha_agent() {
         fi
         echo "$(get_text "uninstalling_agent")"
         rm -rf ~/nezha ~/nezha_tmp
-        echo "Nezha agent uninstallation completed."
+        echo "$(get_text "nezha_agent_uninstalled")"
     else
-        echo "Nezha agent is not installed."
+        echo "$(get_text "nezha_agent_not_installed")"
     fi
 }
 
 # Main script to handle FreeBSD menu
 display_freebsd_menu() {
-    echo "$(get_text "welcome")"
     while true; do
         echo "$(get_text "choose_option")"
         echo "1) $(get_text "install_agent")"
-        echo "2) $(get_text "check_status")"
-        echo "3) $(get_text "uninstall_agent")"
+        echo "2) $(get_text "uninstall_agent")"
+        echo "3) $(get_text "check_status")"
         echo "4) $(get_text "start_agent")"
         echo "5) $(get_text "stop_agent")"
+        echo "6) $(get_text "restart_agent")"
         echo "0) $(get_text "exit")"
-        read -p "Choose an option [0-5]: " choice
+        read -p "$(get_text "choose_option") [0-6]: " choice
 
         case $choice in
             1)
@@ -605,12 +672,12 @@ display_freebsd_menu() {
                 fi
                 ;;
             2)
-                check_freebsd_nezha_agent_status
-                ;;
-            3)
                 if confirm_action; then
                     uninstall_freebsd_nezha_agent
                 fi
+                ;;
+            3)
+                check_freebsd_nezha_agent_status
                 ;;
             4)
                 if confirm_action; then
@@ -622,8 +689,13 @@ display_freebsd_menu() {
                     stop_freebsd_nezha_agent
                 fi
                 ;;
+            6)
+                if confirm_action; then
+                    restart_freebsd_nezha_agent
+                fi
+                ;;
             0)
-                echo "$(get_text "exit")"
+                echo "$(get_text "exit_message")"
                 break
                 ;;
             *)
@@ -639,7 +711,7 @@ select_language
 detect_os
 
 if [[ "$OS" == "Unsupported" || "$OS" == "Unknown" ]]; then
-    echo "This script does not support your operating system."
+    echo "$(get_text "unsupported_os")"
     exit 1
 fi
 
@@ -652,5 +724,5 @@ elif [[ "$OSTYPE" == "linux-gnu"* ]]; then
         display_menu 0
     fi
 else
-    echo "This script is designed to run on Linux or FreeBSD systems."
+    echo "$(get_text "unknown_os")"
 fi
