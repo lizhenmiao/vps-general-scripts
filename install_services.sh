@@ -68,7 +68,7 @@ lang_en=(
     ["unsupported_os"]="This script does not support your operating system."
     ["unknown_os"]="This script is designed to run on Linux or FreeBSD systems."
     ["attempt_failed"]="Attempt %d failed, retrying..."
-    ["return_to_menu"]="Press any key to return to the main menu..."
+    ["return_to_menu"]="Press enter to return to the main menu..."
 )
 
 # Chinese translations
@@ -135,7 +135,7 @@ lang_cn=(
     ["unsupported_os"]="不支持此操作系统。"
     ["unknown_os"]="此脚本适用于 Linux 或 FreeBSD 系统。"
     ["attempt_failed"]="第 %d 次尝试失败，正在重试..."
-    ["return_to_menu"]="按任意键返回主菜单..."
+    ["return_to_menu"]="按下回车键返回主菜单..."
 )
 
 # Set default language
@@ -144,7 +144,7 @@ current_lang="cn"
 # Function to select language
 select_language() {
     echo "Welcome to use VPS General Scripts / 欢迎使用 VPS 通用脚本"
-    echo "Version: 1.0.2"
+    echo "Version: 1.0.3"
     echo "Last Updated: 2024-10-31"
     echo "Github: https://github.com/lizhenmiao/vps-general-scripts"
     echo ""
