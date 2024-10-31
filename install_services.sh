@@ -68,6 +68,7 @@ lang_en=(
     ["unsupported_os"]="This script does not support your operating system."
     ["unknown_os"]="This script is designed to run on Linux or FreeBSD systems."
     ["attempt_failed"]="Attempt %d failed, retrying..."
+    ["return_to_menu"]="Press any key to return to the main menu..."
 )
 
 # Chinese translations
@@ -134,6 +135,7 @@ lang_cn=(
     ["unsupported_os"]="不支持此操作系统。"
     ["unknown_os"]="此脚本适用于 Linux 或 FreeBSD 系统。"
     ["attempt_failed"]="第 %d 次尝试失败，正在重试..."
+    ["return_to_menu"]="按任意键返回主菜单..."
 )
 
 # Set default language
@@ -141,6 +143,10 @@ current_lang="cn"
 
 # Function to select language
 select_language() {
+    echo "Welcome to use VPS General Scripts / 欢迎使用 VPS 通用脚本"
+    echo "Version: 1.0.0"
+    echo "Github: https://github.com/lizhenmiao/vps-general-scripts"
+    echo ""
     echo "Select language / 选择语言:"
     echo "1) English"
     echo "2) 中文"
@@ -409,6 +415,7 @@ is_vps_in_china() {
 
 # Function to display the menu and handle user input
 display_menu() {
+    local is_china=$1
     while true; do
         echo "$(get_text "choose_option")"
         echo "1) $(get_text "install_nginx")"
@@ -430,36 +437,44 @@ display_menu() {
             1)
                 if confirm_action; then
                     install_nginx
+                    read -p "$(get_text "return_to_menu")"
                 fi
                 ;;
             2)
                 if confirm_action; then
                     uninstall_nginx
+                    read -p "$(get_text "return_to_menu")"
                 fi
                 ;;
             3)
                 info_nginx
+                read -p "$(get_text "return_to_menu")"
                 ;;
             4)
                 if confirm_action; then
                     install_docker
+                    read -p "$(get_text "return_to_menu")"
                 fi
                 ;;
             5)
                 if confirm_action; then
                     uninstall_docker
+                    read -p "$(get_text "return_to_menu")"
                 fi
                 ;;
             6)
                 info_docker
+                read -p "$(get_text "return_to_menu")"
                 ;;
             7)
                 if [[ $is_china == 1 ]]; then
                     if confirm_action; then
                         set_mirrors
+                        read -p "$(get_text "return_to_menu")"
                     fi
                 else
                     echo "$(get_text "invalid_option")"
+                    read -p "$(get_text "return_to_menu")"
                 fi
                 ;;
             0)
@@ -468,6 +483,7 @@ display_menu() {
                 ;;
             *)
                 echo "$(get_text "invalid_option")"
+                read -p "$(get_text "return_to_menu")"
                 ;;
         esac
         echo
@@ -654,6 +670,7 @@ uninstall_freebsd_nezha_agent() {
 
 # Main script to handle FreeBSD menu
 display_freebsd_menu() {
+    clear  # Clear the screen before displaying the menu
     while true; do
         echo "$(get_text "choose_option")"
         echo "1) $(get_text "install_agent")"
@@ -669,29 +686,35 @@ display_freebsd_menu() {
             1)
                 if confirm_action; then
                     install_freebsd_nezha_agent
+                    read -p "$(get_text "return_to_menu")"
                 fi
                 ;;
             2)
                 if confirm_action; then
                     uninstall_freebsd_nezha_agent
+                    read -p "$(get_text "return_to_menu")"
                 fi
                 ;;
             3)
                 check_freebsd_nezha_agent_status
+                read -p "$(get_text "return_to_menu")"
                 ;;
             4)
                 if confirm_action; then
                     start_freebsd_nezha_agent
+                    read -p "$(get_text "return_to_menu")"
                 fi
                 ;;
             5)
                 if confirm_action; then
                     stop_freebsd_nezha_agent
+                    read -p "$(get_text "return_to_menu")"
                 fi
                 ;;
             6)
                 if confirm_action; then
                     restart_freebsd_nezha_agent
+                    read -p "$(get_text "return_to_menu")"
                 fi
                 ;;
             0)
@@ -700,6 +723,7 @@ display_freebsd_menu() {
                 ;;
             *)
                 echo "$(get_text "invalid_option")"
+                read -p "$(get_text "return_to_menu")"
                 ;;
         esac
         echo
