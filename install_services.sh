@@ -144,7 +144,8 @@ current_lang="cn"
 # Function to select language
 select_language() {
     echo "Welcome to use VPS General Scripts / 欢迎使用 VPS 通用脚本"
-    echo "Version: 1.0.0"
+    echo "Version: 1.0.1"
+    echo "Last Updated: 2024-10-31"
     echo "Github: https://github.com/lizhenmiao/vps-general-scripts"
     echo ""
     echo "Select language / 选择语言:"
@@ -374,6 +375,7 @@ info_docker() {
 
 # Function to get user confirmation
 confirm_action() {
+    echo ""
     read -p "$(get_text "are_you_sure")" confirm
     if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
         return 0
@@ -381,6 +383,7 @@ confirm_action() {
         echo "$(get_text "cancelled")"
         return 1
     fi
+    echo ""
 }
 
 # Function to set mirrors for China
@@ -427,9 +430,11 @@ display_menu() {
         if [[ $is_china == 1 ]]; then
             echo "7) $(get_text "set_mirrors_cn")"
             echo "0) $(get_text "exit")"
+            echo ""
             read -p "$(get_text "choose_option") [0-7]: " choice
         else
             echo "0) $(get_text "exit")"
+            echo ""
             read -p "$(get_text "choose_option") [0-6]: " choice
         fi
 
@@ -437,45 +442,44 @@ display_menu() {
             1)
                 if confirm_action; then
                     install_nginx
-                    read -p "$(get_text "return_to_menu")"
                 fi
+                return_to_menu
                 ;;
             2)
                 if confirm_action; then
                     uninstall_nginx
-                    read -p "$(get_text "return_to_menu")"
                 fi
+                return_to_menu
                 ;;
             3)
                 info_nginx
-                read -p "$(get_text "return_to_menu")"
+                return_to_menu
                 ;;
             4)
                 if confirm_action; then
                     install_docker
-                    read -p "$(get_text "return_to_menu")"
                 fi
+                return_to_menu
                 ;;
             5)
                 if confirm_action; then
                     uninstall_docker
-                    read -p "$(get_text "return_to_menu")"
                 fi
+                return_to_menu
                 ;;
             6)
                 info_docker
-                read -p "$(get_text "return_to_menu")"
+                return_to_menu
                 ;;
             7)
                 if [[ $is_china == 1 ]]; then
                     if confirm_action; then
                         set_mirrors
-                        read -p "$(get_text "return_to_menu")"
                     fi
                 else
                     echo "$(get_text "invalid_option")"
-                    read -p "$(get_text "return_to_menu")"
                 fi
+                return_to_menu
                 ;;
             0)
                 echo "$(get_text "exit_message")"
@@ -483,7 +487,7 @@ display_menu() {
                 ;;
             *)
                 echo "$(get_text "invalid_option")"
-                read -p "$(get_text "return_to_menu")"
+                return_to_menu
                 ;;
         esac
         echo
@@ -680,42 +684,43 @@ display_freebsd_menu() {
         echo "5) $(get_text "stop_agent")"
         echo "6) $(get_text "restart_agent")"
         echo "0) $(get_text "exit")"
+        echo ""
         read -p "$(get_text "choose_option") [0-6]: " choice
 
         case $choice in
             1)
                 if confirm_action; then
                     install_freebsd_nezha_agent
-                    read -p "$(get_text "return_to_menu")"
                 fi
+                return_to_menu
                 ;;
             2)
                 if confirm_action; then
                     uninstall_freebsd_nezha_agent
-                    read -p "$(get_text "return_to_menu")"
                 fi
+                return_to_menu
                 ;;
             3)
                 check_freebsd_nezha_agent_status
-                read -p "$(get_text "return_to_menu")"
+                return_to_menu
                 ;;
             4)
                 if confirm_action; then
                     start_freebsd_nezha_agent
-                    read -p "$(get_text "return_to_menu")"
                 fi
+                return_to_menu
                 ;;
             5)
                 if confirm_action; then
                     stop_freebsd_nezha_agent
-                    read -p "$(get_text "return_to_menu")"
                 fi
+                return_to_menu
                 ;;
             6)
                 if confirm_action; then
                     restart_freebsd_nezha_agent
-                    read -p "$(get_text "return_to_menu")"
                 fi
+                return_to_menu
                 ;;
             0)
                 echo "$(get_text "exit_message")"
@@ -723,11 +728,17 @@ display_freebsd_menu() {
                 ;;
             *)
                 echo "$(get_text "invalid_option")"
-                read -p "$(get_text "return_to_menu")"
+                return_to_menu
                 ;;
         esac
         echo
     done
+}
+
+# Function to return to the menu
+return_to_menu() {
+  echo ""
+  read -p "$(get_text "return_to_menu")"
 }
 
 # Main script
