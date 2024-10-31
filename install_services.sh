@@ -409,8 +409,8 @@ is_vps_in_china() {
 
 # Function to display the menu and handle user input
 display_menu() {
-    clear
     while true; do
+        clear
         echo "$(get_text "choose_option")"
         echo "1) $(get_text "install_nginx")"
         echo "2) $(get_text "uninstall_nginx")"
@@ -655,8 +655,8 @@ uninstall_freebsd_nezha_agent() {
 
 # Main script to handle FreeBSD menu
 display_freebsd_menu() {
-    clear
     while true; do
+        clear
         echo "$(get_text "choose_option")"
         echo "1) $(get_text "install_agent")"
         echo "2) $(get_text "uninstall_agent")"
