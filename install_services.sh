@@ -144,7 +144,7 @@ current_lang="cn"
 # Function to select language
 select_language() {
     echo "Welcome to use VPS General Scripts / 欢迎使用 VPS 通用脚本"
-    echo "Version: 1.0.1"
+    echo "Version: 1.0.2"
     echo "Last Updated: 2024-10-31"
     echo "Github: https://github.com/lizhenmiao/vps-general-scripts"
     echo ""
@@ -378,12 +378,13 @@ confirm_action() {
     echo ""
     read -p "$(get_text "are_you_sure")" confirm
     if [[ "$confirm" == "y" || "$confirm" == "Y" ]]; then
+        echo ""
         return 0
     else
         echo "$(get_text "cancelled")"
+        echo ""
         return 1
     fi
-    echo ""
 }
 
 # Function to set mirrors for China
@@ -430,11 +431,9 @@ display_menu() {
         if [[ $is_china == 1 ]]; then
             echo "7) $(get_text "set_mirrors_cn")"
             echo "0) $(get_text "exit")"
-            echo ""
             read -p "$(get_text "choose_option") [0-7]: " choice
         else
             echo "0) $(get_text "exit")"
-            echo ""
             read -p "$(get_text "choose_option") [0-6]: " choice
         fi
 
@@ -684,7 +683,6 @@ display_freebsd_menu() {
         echo "5) $(get_text "stop_agent")"
         echo "6) $(get_text "restart_agent")"
         echo "0) $(get_text "exit")"
-        echo ""
         read -p "$(get_text "choose_option") [0-6]: " choice
 
         case $choice in
