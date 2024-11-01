@@ -144,8 +144,8 @@ current_lang="cn"
 # Function to select language
 select_language() {
     echo "Welcome to use VPS General Scripts / 欢迎使用 VPS 通用脚本"
-    echo "Version: 1.0.4"
-    echo "Last Updated: 2024-10-31"
+    echo "Version: 1.0.5"
+    echo "Last Updated: 2024-11-01"
     echo "Github: https://github.com/lizhenmiao/vps-general-scripts"
     echo ""
     echo "Select language / 选择语言:"
@@ -243,6 +243,8 @@ install_nginx() {
                 echo "$(get_text "installing_nginx") $OS..."
                 sudo apt update
                 sudo apt install -y nginx
+                sudo systemctl start nginx
+                sudo systemctl enable nginx
                 ;;
             centos|redhat)
                 echo "$(get_text "installing_nginx") $OS..."
@@ -315,17 +317,22 @@ install_docker() {
             ubuntu|debian)
                 echo "$(get_text "installing_docker") $OS..."
                 sudo apt update
+                sudo apt remove docker docker-engine docker.io containerd runc
                 sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
-                curl -fsSL https://download.docker.com/linux/$OS/gpg | sudo apt-key add -
-                sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/$OS $(lsb_release -cs) stable"
+                curl -fsSL https://download.docker.com/linux/$OS/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+                echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/$OS $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
                 sudo apt update
-                sudo apt install -y docker-ce
+                sudo apt install docker-ce docker-ce-cli containerd.io
+                sudo systemctl start docker
+                sudo systemctl enable docker
                 ;;
             centos|redhat)
                 echo "$(get_text "installing_docker") $OS..."
                 sudo yum install -y yum-utils
                 sudo yum-config-manager --add-repo https://download.docker.com/linux/centos/docker-ce.repo
                 sudo yum install -y docker-ce docker-ce-cli containerd.io
+                sudo systemctl start docker
+                sudo systemctl enable docker
                 ;;
             *)
                 echo "$(get_text "docker_not_supported") $OS"
@@ -342,16 +349,18 @@ uninstall_docker() {
                 echo "$(get_text "uninstalling_docker") $OS..."
                 sudo systemctl stop docker
                 sudo systemctl disable docker
-                sudo apt remove -y docker-ce
-                sudo apt purge -y docker-ce
-                sudo rm -rf /var/lib/docker /etc/docker /var/run/docker.sock /usr/bin/docker
+                sudo apt remove -y docker-ce docker-ce-cli containerd.io
+                sudo apt purge -y docker-ce docker-ce-cli containerd.io
+                sudo rm -rf /var/lib/docker /etc/docker /var/run/docker.sock
+                sudo apt autoremove -y
                 ;;
             centos|redhat)
                 echo "$(get_text "uninstalling_docker") $OS..."
                 sudo systemctl stop docker
                 sudo systemctl disable docker
                 sudo yum remove -y docker-ce docker-ce-cli containerd.io
-                sudo rm -rf /var/lib/docker /etc/docker /var/run/docker.sock /usr/bin/docker
+                sudo rm -rf /var/lib/docker /etc/docker /var/run/docker.sock
+                sudo yum autoremove -y
                 ;;
             *)
                 echo "$(get_text "docker_not_supported") $OS"
