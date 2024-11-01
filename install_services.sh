@@ -144,7 +144,7 @@ current_lang="cn"
 # Function to select language
 select_language() {
     echo "Welcome to use VPS General Scripts / 欢迎使用 VPS 通用脚本"
-    echo "Version: 1.0.5"
+    echo "Version: 1.0.6"
     echo "Last Updated: 2024-11-01"
     echo "Github: https://github.com/lizhenmiao/vps-general-scripts"
     echo ""
@@ -316,15 +316,36 @@ install_docker() {
         case "$OS" in
             ubuntu|debian)
                 echo "$(get_text "installing_docker") $OS..."
-                sudo apt update
+
+                # Remove old versions of Docker
                 sudo apt remove docker docker-engine docker.io containerd runc
-                sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
-                curl -fsSL https://download.docker.com/linux/$OS/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
-                echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/$OS $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+                sudo apt purge -y docker-ce docker-ce-cli containerd.io
+
+                # Update package index
                 sudo apt update
+
+                # Install dependencies
+                sudo apt install -y apt-transport-https ca-certificates curl software-properties-common
+
+                # Add Docker GPG key
+                curl -fsSL https://download.docker.com/linux/$OS/gpg | sudo gpg --dearmor -o /usr/share/keyrings/docker-archive-keyring.gpg
+
+                # Add Docker APT repository
+                echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/docker-archive-keyring.gpg] https://download.docker.com/linux/$OS $(lsb_release -cs) stable" | sudo tee /etc/apt/sources.list.d/docker.list > /dev/null
+
+                # Update package index
+                sudo apt update
+
+                # Install Docker
                 sudo apt install docker-ce docker-ce-cli containerd.io
+
+                # Start and enable Docker
                 sudo systemctl start docker
                 sudo systemctl enable docker
+
+                # Verify Docker installation
+                echo ""
+                info_docker
                 ;;
             centos|redhat)
                 echo "$(get_text "installing_docker") $OS..."
