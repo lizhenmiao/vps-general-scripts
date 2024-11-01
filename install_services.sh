@@ -69,6 +69,10 @@ lang_en=(
     ["unknown_os"]="This script is designed to run on Linux or FreeBSD systems."
     ["attempt_failed"]="Attempt %d failed, retrying..."
     ["return_to_menu"]="Press enter to return to the main menu..."
+    ["docker_uninstallation_failed"]="Docker uninstallation failed."
+    ["docker_uninstalled"]="Docker has been uninstalled."
+    ["nginx_uninstallation_failed"]="Nginx uninstallation failed."
+    ["nginx_uninstalled"]="Nginx has been uninstalled."
 )
 
 # Chinese translations
@@ -136,6 +140,10 @@ lang_cn=(
     ["unknown_os"]="此脚本适用于 Linux 或 FreeBSD 系统。"
     ["attempt_failed"]="第 %d 次尝试失败，正在重试..."
     ["return_to_menu"]="按下回车键返回主菜单..."
+    ["docker_uninstallation_failed"]="卸载 Docker 失败。"
+    ["docker_uninstalled"]="Docker 已被卸载。"
+    ["nginx_uninstallation_failed"]="卸载 Nginx 失败。"
+    ["nginx_uninstalled"]="Nginx 已被卸载。"
 )
 
 # Set default language
@@ -144,7 +152,7 @@ current_lang="cn"
 # Function to select language
 select_language() {
     echo "Welcome to use VPS General Scripts / 欢迎使用 VPS 通用脚本"
-    echo "Version: 1.0.6"
+    echo "Version: 1.0.7"
     echo "Last Updated: 2024-11-01"
     echo "Github: https://github.com/lizhenmiao/vps-general-scripts"
     echo ""
@@ -245,11 +253,19 @@ install_nginx() {
                 sudo apt install -y nginx
                 sudo systemctl start nginx
                 sudo systemctl enable nginx
+
+                # Verify Nginx installation
+                echo ""
+                info_nginx
                 ;;
             centos|redhat)
                 echo "$(get_text "installing_nginx") $OS..."
                 sudo yum install -y epel-release
                 sudo yum install -y nginx
+
+                # Verify Nginx installation
+                echo ""
+                info_nginx
                 ;;
             *)
                 echo "$(get_text "nginx_not_supported") $OS"
@@ -269,6 +285,13 @@ uninstall_nginx() {
                 sudo apt remove -y nginx nginx-common nginx-core
                 sudo apt purge -y nginx nginx-common nginx-core
                 sudo rm -rf /etc/nginx /usr/sbin/nginx /var/lib/nginx /var/log/nginx /var/www/html
+
+                # Check if Nginx is still installed
+                if is_nginx_installed; then
+                    echo "$(get_text "nginx_uninstallation_failed")"
+                else
+                    echo "$(get_text "nginx_uninstalled")"
+                fi
                 ;;
             centos|redhat)
                 echo "$(get_text "uninstalling_nginx") $OS..."
@@ -276,6 +299,13 @@ uninstall_nginx() {
                 sudo systemctl disable nginx
                 sudo yum remove -y nginx
                 sudo rm -rf /etc/nginx /usr/sbin/nginx /var/lib/nginx /var/log/nginx /var/www/html
+
+                # Check if Nginx is still installed
+                if is_nginx_installed; then
+                    echo "$(get_text "nginx_uninstallation_failed")"
+                else
+                    echo "$(get_text "nginx_uninstalled")"
+                fi
                 ;;
             *)
                 echo "$(get_text "nginx_not_supported") $OS"
@@ -354,6 +384,10 @@ install_docker() {
                 sudo yum install -y docker-ce docker-ce-cli containerd.io
                 sudo systemctl start docker
                 sudo systemctl enable docker
+
+                # Verify Docker installation
+                echo ""
+                info_docker
                 ;;
             *)
                 echo "$(get_text "docker_not_supported") $OS"
@@ -374,6 +408,13 @@ uninstall_docker() {
                 sudo apt purge -y docker-ce docker-ce-cli containerd.io
                 sudo rm -rf /var/lib/docker /etc/docker /var/run/docker.sock
                 sudo apt autoremove -y
+
+                # Check if Docker is still installed
+                if is_docker_installed; then
+                    echo "$(get_text "docker_uninstallation_failed")"
+                else
+                    echo "$(get_text "docker_uninstalled")"
+                fi
                 ;;
             centos|redhat)
                 echo "$(get_text "uninstalling_docker") $OS..."
@@ -382,6 +423,13 @@ uninstall_docker() {
                 sudo yum remove -y docker-ce docker-ce-cli containerd.io
                 sudo rm -rf /var/lib/docker /etc/docker /var/run/docker.sock
                 sudo yum autoremove -y
+
+                # Check if Docker is still installed
+                if is_docker_installed; then
+                    echo "$(get_text "docker_uninstallation_failed")"
+                else
+                    echo "$(get_text "docker_uninstalled")"
+                fi
                 ;;
             *)
                 echo "$(get_text "docker_not_supported") $OS"
