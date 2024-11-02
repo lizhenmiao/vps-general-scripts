@@ -61,8 +61,7 @@ lang_en=(
     ["enter_password"]="Enter the password provided by Nezha dashboard"
     ["get_latest_version"]="Getting latest version..."
     ["failed_get_latest_version"]="Failed to fetch the latest version."
-    ["nezha_agent_installed"]="Nezha agent is already installed."
-    ["nezha_agent_running"]="Nezha agent is currently running."
+    ["nezha_agent_running"]="Nezha agent is installed and currently running."
     ["nezha_agent_installed_not_running"]="Nezha agent is installed but not running."
     ["nezha_agent_uninstalled"]="Nezha agent uninstallation completed."
     ["unsupported_os"]="This script does not support your operating system."
@@ -132,8 +131,7 @@ lang_cn=(
     ["enter_password"]="请输入哪吒面板提供的密码"
     ["get_latest_version"]="获取最新版本中..."
     ["failed_get_latest_version"]="获取最新版本失败。"
-    ["nezha_agent_installed"]="哪吒探针 agent 已安装。"
-    ["nezha_agent_running"]="哪吒探针 agent 已运行。"
+    ["nezha_agent_running"]="哪吒探针 agent 已安装，且已运行。"
     ["nezha_agent_installed_not_running"]="哪吒探针 agent 已安装，但未运行。"
     ["nezha_agent_uninstalled"]="哪吒探针 agent 已卸载。"
     ["unsupported_os"]="不支持此操作系统。"
@@ -152,7 +150,7 @@ current_lang="cn"
 # Function to select language
 select_language() {
     echo "Welcome to use VPS General Scripts / 欢迎使用 VPS 通用脚本"
-    echo "Version: 1.0.7"
+    echo "Version: 1.0.8"
     echo "Last Updated: 2024-11-01"
     echo "Github: https://github.com/lizhenmiao/vps-general-scripts"
     echo ""
@@ -328,6 +326,15 @@ info_nginx() {
         else
             echo "$(get_text "nginx_config_file_not_found")"
         fi
+    else
+        echo "$(get_text "nginx_not_installed")"
+    fi
+}
+
+# Function to edit Nginx config
+edit_nginx() {
+    if is_nginx_installed; then
+        sudo nano /etc/nginx/nginx.conf
     else
         echo "$(get_text "nginx_not_installed")"
     fi
@@ -574,7 +581,19 @@ display_menu() {
 
 # Function to get the latest version of Nezha agent from GitHub
 get_latest_nezha_version() {
-    curl -s https://api.github.com/repos/nezhahq/agent/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/'
+    nezha_agent_freebsd_default_version="v0.20.2"
+
+    # Get the latest version from GitHub
+    latest_version=$(curl -s https://api.github.com/repos/nezhahq/agent/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
+
+    if [ -z "$latest_version" ] || [ "$latest_version" == "null" ]; then
+        echo "Failed to fetch the latest version. Using default version: $DEFAULT_VERSION"
+        latest_version=$DEFAULT_VERSION
+    else
+        echo "Latest Nezha version is: $latest_version"
+    fi
+
+    echo $latest_version
 }
 
 # Function to get the PID of a process by name
@@ -724,7 +743,6 @@ EOF
 # Function to check the status of Nezha agent on FreeBSD
 check_freebsd_nezha_agent_status() {
     if is_freebsd_nezha_agent_installed; then
-        echo "$(get_text "nezha_agent_installed")"
         if is_freebsd_nezha_agent_running; then
             echo "$(get_text "nezha_agent_running")"
             print_nezha_agent_pids
