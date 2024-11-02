@@ -56,7 +56,7 @@ lang_en=(
     ["terminated_agent"]="Terminated agent.sh with PID"
     ["terminated_nezha_agent"]="Terminated nezha-agent with PID"
     ["nezha_agent_not_running"]="Nezha agent is not running."
-    ["enter_domain"]="Enter the Nezha dashboard domain"
+    ["enter_domain"]="Enter the Nezha dashboard domain / IP address"
     ["enter_port"]="Enter the Nezha dashboard port"
     ["enter_password"]="Enter the password provided by Nezha dashboard"
     ["get_latest_version"]="Getting latest version..."
@@ -72,6 +72,7 @@ lang_en=(
     ["docker_uninstalled"]="Docker has been uninstalled."
     ["nginx_uninstallation_failed"]="Nginx uninstallation failed."
     ["nginx_uninstalled"]="Nginx has been uninstalled."
+    ["download_failed"]="Download failed."
 )
 
 # Chinese translations
@@ -126,7 +127,7 @@ lang_cn=(
     ["terminated_agent"]="终止 agent.sh 进程 PID"
     ["terminated_nezha_agent"]="终止 nezha-agent 进程 PID"
     ["nezha_agent_not_running"]="哪吒探针 agent 未运行。"
-    ["enter_domain"]="请输入哪吒面板域名"
+    ["enter_domain"]="请输入哪吒面板域名 或 IP 地址"
     ["enter_port"]="请输入哪吒面板端口"
     ["enter_password"]="请输入哪吒面板提供的密码"
     ["get_latest_version"]="获取最新版本中..."
@@ -142,6 +143,7 @@ lang_cn=(
     ["docker_uninstalled"]="Docker 已被卸载。"
     ["nginx_uninstallation_failed"]="卸载 Nginx 失败。"
     ["nginx_uninstalled"]="Nginx 已被卸载。"
+    ["download_failed"]="卸载失败。"
 )
 
 # Set default language
@@ -150,8 +152,8 @@ current_lang="cn"
 # Function to select language
 select_language() {
     echo "Welcome to use VPS General Scripts / 欢迎使用 VPS 通用脚本"
-    echo "Version: 1.0.8"
-    echo "Last Updated: 2024-11-01"
+    echo "Version: 1.0.9"
+    echo "Last Updated: 2024-11-02"
     echo "Github: https://github.com/lizhenmiao/vps-general-scripts"
     echo ""
     echo "Select language / 选择语言:"
@@ -587,8 +589,8 @@ get_latest_nezha_version() {
     latest_version=$(curl -s https://api.github.com/repos/nezhahq/agent/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
     if [ -z "$latest_version" ] || [ "$latest_version" == "null" ]; then
-        echo "Failed to fetch the latest version. Using default version: $DEFAULT_VERSION"
-        latest_version=$DEFAULT_VERSION
+        echo "Failed to fetch the latest version. Using default version: $nezha_agent_freebsd_default_version"
+        latest_version=$nezha_agent_freebsd_default_version
     else
         echo "Latest Nezha version is: $latest_version"
     fi
@@ -707,20 +709,34 @@ install_freebsd_nezha_agent() {
 
     mkdir -p ~/nezha ~/nezha_tmp
     cd ~/nezha
-    wget "https://github.com/nezhahq/agent/releases/download/$latest_version/nezha-agent_freebsd_amd64.zip"
-    unzip "nezha-agent_freebsd_amd64.zip"
-    rm nezha-agent_freebsd_amd64.zip  # Remove the ZIP file after extraction
 
+    # Download the latest Nezha agent from GitHub
+    wget "https://github.com/nezhahq/agent/releases/download/$latest_version/nezha-agent_freebsd_amd64.zip"
+
+    # Check if the download was successful
+    if [ $? -ne 0 ]; then
+        echo "$(get_text "download_failed")"
+        return
+    fi
+
+    # Unzip the downloaded file
+    unzip "nezha-agent_freebsd_amd64.zip"
+    # Remove the ZIP file after extraction
+    rm nezha-agent_freebsd_amd64.zip
+
+    # Create the agent.sh script
     cat > agent.sh << EOF
 #!/bin/sh
 export TMPDIR=~/nezha_tmp
 ~/nezha/nezha-agent -s $domain:$port -p $password -d >> ~/nezha/agent.log 2>&1
 EOF
 
+    # Empowerment the agent.sh script
     chmod +x agent.sh
+    # Empowerment the nezha-agent script
     chmod +x nezha-agent
 
-    # Run the agent.sh script as a named task
+    # Run the agent.sh script
     nohup ./agent.sh > /dev/null 2>&1 &
 
     # Try to start the agent up to 5 times
