@@ -152,7 +152,7 @@ current_lang="cn"
 # Function to select language
 select_language() {
     echo "Welcome to use VPS General Scripts / 欢迎使用 VPS 通用脚本"
-    echo "Version: 1.0.9"
+    echo "Version: 1.0.10"
     echo "Last Updated: 2024-11-02"
     echo "Github: https://github.com/lizhenmiao/vps-general-scripts"
     echo ""
@@ -589,13 +589,13 @@ get_latest_nezha_version() {
     latest_version=$(curl -s https://api.github.com/repos/nezhahq/agent/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
 
     if [ -z "$latest_version" ] || [ "$latest_version" == "null" ]; then
-        echo "Failed to fetch the latest version. Using default version: $nezha_agent_freebsd_default_version"
+        echo "Failed to fetch the latest version. Using default version: $nezha_agent_freebsd_default_version" >&2
         latest_version=$nezha_agent_freebsd_default_version
     else
-        echo "Latest Nezha version is: $latest_version"
+        echo "Latest Nezha version is: $latest_version" >&2
     fi
 
-    echo $latest_version
+    echo "$latest_version"
 }
 
 # Function to get the PID of a process by name
