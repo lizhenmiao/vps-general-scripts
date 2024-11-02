@@ -143,7 +143,7 @@ lang_cn=(
     ["docker_uninstalled"]="Docker 已被卸载。"
     ["nginx_uninstallation_failed"]="卸载 Nginx 失败。"
     ["nginx_uninstalled"]="Nginx 已被卸载。"
-    ["download_failed"]="卸载失败。"
+    ["download_failed"]="下载失败。"
 )
 
 # Set default language
