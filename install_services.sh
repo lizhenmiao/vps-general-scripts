@@ -583,7 +583,7 @@ display_menu() {
 
 # Function to get the latest version of Nezha agent from GitHub
 get_latest_nezha_version() {
-    nezha_agent_freebsd_default_version="v0.20.2"
+    nezha_agent_freebsd_default_version="v0.20.5"
 
     # Get the latest version from GitHub
     latest_version=$(curl -s https://api.github.com/repos/nezhahq/agent/releases/latest | grep '"tag_name":' | sed -E 's/.*"([^"]+)".*/\1/')
@@ -701,7 +701,8 @@ install_freebsd_nezha_agent() {
     read -p "$(get_text "enter_password"): " password
 
     echo "$(get_text "get_latest_version")"
-    local latest_version=$(get_latest_nezha_version)
+    # local latest_version=$(get_latest_nezha_version)
+    local latest_version="v0.20.5"
     if [ -z "$latest_version" ]; then
         echo "$(get_text "failed_get_latest_version")"
         return
