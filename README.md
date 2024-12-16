@@ -4,7 +4,7 @@
 1. 直接安装(推荐)
 
 ```bash
-wget -q https://raw.githubusercontent.com/lizhenmiao/vps-general-scripts/main/serv00/install_nezha.sh -o nezha.sh && chmod +x nezha.sh && ./nezha.sh install_agent ip port secret version
+curl -L https://raw.githubusercontent.com/lizhenmiao/vps-general-scripts/main/serv00/install_nezha.sh -o nezha.sh && chmod +x nezha.sh && ./nezha.sh install_agent ip port secret version
 ```
 > ip: 哪吒 dashboard 的 ip, 必填
 
@@ -16,7 +16,7 @@ wget -q https://raw.githubusercontent.com/lizhenmiao/vps-general-scripts/main/se
 
 2. 面板交互输入安装
 ```bash
-wget -q https://raw.githubusercontent.com/lizhenmiao/vps-general-scripts/main/serv00/install_nezha.sh -o nezha.sh && chmod +x nezha.sh && ./nezha.sh install_agent
+curl -L https://raw.githubusercontent.com/lizhenmiao/vps-general-scripts/main/serv00/install_nezha.sh -o nezha.sh && chmod +x nezha.sh && ./nezha.sh install_agent
 ```
 
 > 之后按照提示输入内容回车运行即可
